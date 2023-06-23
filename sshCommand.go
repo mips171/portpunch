@@ -59,28 +59,31 @@ func RunSSHCommand(ctx context.Context, a fyne.App, w fyne.Window, msgContainer 
 
 		msgContainer.Objects = []fyne.CanvasObject{instructionLabel, sshEntry, copyButton}
 		msgContainer.Refresh()
-	} else {
-		proto := "http"
-		if config.targetPort == "443" {
-			proto = "https"
-		}
-		urlStr := fmt.Sprintf("%s://localhost:%s", proto, config.localPort)
-		parsedUrl, err := url.Parse(urlStr)
-		if err != nil {
-			return fmt.Errorf("failed to parse URL: %v", err)
-		}
-
-		link := widget.NewHyperlink("Open in browser", parsedUrl)
-		link.OnTapped = func() {
-			err := a.OpenURL(parsedUrl)
-			if err != nil {
-				return
-			}
-		}
-
-		msgContainer.Objects = []fyne.CanvasObject{link}
-		msgContainer.Refresh()
+		return nil
 	}
+
+	proto := "http"
+	if config.targetPort == "443" {
+		proto = "https"
+	}
+
+	urlStr := fmt.Sprintf("%s://localhost:%s", proto, config.localPort)
+	parsedUrl, err := url.Parse(urlStr)
+
+	if err != nil {
+		return fmt.Errorf("failed to parse URL: %v", err)
+	}
+
+	link := widget.NewHyperlink("Open in browser", parsedUrl)
+	link.OnTapped = func() {
+		err := a.OpenURL(parsedUrl)
+		if err != nil {
+			return
+		}
+	}
+
+	msgContainer.Objects = []fyne.CanvasObject{link}
+	msgContainer.Refresh()
 
 	return nil
 }

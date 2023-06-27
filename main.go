@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
 )
@@ -42,6 +43,11 @@ func main() {
 		form,
 		msgContainer,
 	))
+
+	w.SetFixedSize(true)
+
+	// Set the window dimensions
+	w.Resize(fyne.NewSize(480.0, 300.0))
 
 	w.ShowAndRun()
 }
